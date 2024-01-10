@@ -9,12 +9,13 @@ exports.jwtStrategy = new Jwtstrategy(
   {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.TOKEN_SECRET,
+    passReqToCallback: true,
   },
-  async (user, done) => {
-    console.log("Is in jwt strat");
+  async (req, user, done) => {
     if (!user) {
       return done(null, null, { message: "Invalid token" });
     }
+    req.user = user;
     return done(null, user);
   }
 );

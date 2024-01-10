@@ -18,6 +18,7 @@ const userSchema = new Schema({
     },
   },
   password: { type: String, required: true, maxLength: 100 },
+  admin: { type: Boolean, required: true },
 });
 
 userSchema.virtual("url").get(function () {

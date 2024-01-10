@@ -6,7 +6,7 @@ const postSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   title: { type: String, required: true, maxLength: 100 },
   body: { type: String, required: true, maxLength: 2000 },
-  createdAt: { type: Date, imumutable: true, default: () => Date.now() },
+  createdAt: { type: Date, imumutable: true },
   updatedAt: { type: Date, default: () => Date.now() },
   published: { type: Boolean, default: () => true },
 });

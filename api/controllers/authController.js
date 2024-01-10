@@ -64,10 +64,7 @@ exports.signup_post = [
     .isEmail()
     .withMessage("Invalid email format")
     .escape(),
-  body("password", "Password is required with a minimum of 8 characters")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
+  body("password", "Password is required").trim().isLength({ min: 1 }).escape(),
   body("confirm_password", "Confirm Password is required")
     .trim()
     .isLength({ min: 1 })
@@ -76,6 +73,13 @@ exports.signup_post = [
       return value === req.body.password;
     })
     .withMessage("Confirm Password needs to match Password"),
+  body("admin", "Admin is required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .customSanitizer((value, { req }) => {
+      return value == process.env.ADMIN_KEY;
+    }),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -86,6 +90,8 @@ exports.signup_post = [
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
+      admin: req.body.admin,
+      createdAt: Date.now(),
     });
 
     if (!errors.isEmpty()) {
