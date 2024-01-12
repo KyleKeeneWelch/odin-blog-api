@@ -11,12 +11,12 @@ exports.jwtStrategy = new Jwtstrategy(
     secretOrKey: process.env.TOKEN_SECRET,
     passReqToCallback: true,
   },
-  async (req, user, done) => {
-    if (!user) {
+  async (req, data, done) => {
+    if (!data) {
       return done(null, null, { message: "Invalid token" });
     }
-    req.user = user;
-    return done(null, user);
+    req.user = data.data;
+    return done(null, data.data);
   }
 );
 
@@ -25,11 +25,11 @@ exports.refreshJwtStrategy = new Jwtstrategy(
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.REFRESH_TOKEN_SECRET,
   },
-  async (user, done) => {
-    if (!user) {
+  async (data, done) => {
+    if (!data) {
       return done(null, null, { message: "Invalid token" });
     }
-    return done(null, user);
+    return done(null, data.data);
   }
 );
 

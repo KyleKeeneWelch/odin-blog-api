@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
+const { v4: uuidv4 } = require("uuid");
 
 const User = require("../models/user");
 const RefreshToken = require("../models/refreshToken");
@@ -147,9 +148,17 @@ exports.logout_delete = asyncHandler(async (req, res, next) => {
 });
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: "10m" });
+  const data = {
+    data: user,
+    jwtid: uuidv4(),
+  };
+  return jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: "10m" });
 }
 
 function generateRefreshAccessToken(user) {
-  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+  const data = {
+    data: user,
+    jwtid: uuidv4(),
+  };
+  return jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
 }
