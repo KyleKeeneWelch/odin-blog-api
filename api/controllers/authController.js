@@ -39,7 +39,6 @@ exports.login_post = [
           token: generateRefreshAccessToken(user),
         });
         await refreshToken.save();
-
         res.json({
           accessToken: accessToken,
           refreshToken: refreshToken.token,

@@ -38,7 +38,6 @@ exports.localStrategy = new LocalStrategy(
   async (email, password, done) => {
     try {
       const result = await User.findOne({ email: email });
-
       if (!result) {
         return done(null, false, { message: "User not found" });
       }
